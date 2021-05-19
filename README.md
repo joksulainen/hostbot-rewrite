@@ -1,4 +1,4 @@
-# joksuBOT-rewrite
+# hostbot-rewrite
 
 This is hobby work for myself only, I will not add new contributors or collaborators to this repository.
 
