@@ -47,13 +47,13 @@ const commands = {
 			description: 'Returns a random integer between min and max (both inclusive)',
 			options: [{
 				name: 'max',
+				description: 'Max value (Default: 6)',
 				type: 'INTEGER',
-				description: 'Max value',
 			},
 			{
 				name: 'min',
+				description: 'Min value (Default: 1)',
 				type: 'INTEGER',
-				description: 'Min value',
 			}],
 		},
 		handler: async (interaction) => {
