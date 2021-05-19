@@ -37,7 +37,7 @@ const commands = {
 			description: 'Pong!',
 		},
 		handler: async (interaction) => {
-			await interaction.reply('Command received, measuring ping...');
+			await interaction.reply('Command received, measuring latency...');
 			const msg = await interaction.channel.send('Ping...');
 			msg.edit(`**Pong!** \`${Date.now() - msg.createdAt}ms\``);
 		},
