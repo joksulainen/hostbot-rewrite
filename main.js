@@ -1,6 +1,5 @@
 // Dependencies
 const config = require('./config.json');
-require('dotenv').config();
 const Discord = require('discord.js');
 
 // Create new Discord client
@@ -48,13 +47,13 @@ const commands = {
 			description: 'Returns a random integer between min and max (both inclusive)',
 			options: [{
 				name: 'max',
+				description: 'Max value (Default: 6)',
 				type: 'INTEGER',
-				description: 'Max value',
 			},
 			{
 				name: 'min',
+				description: 'Min value (Default: 1)',
 				type: 'INTEGER',
-				description: 'Min value',
 			}],
 		},
 		handler: async (interaction) => {
@@ -97,4 +96,4 @@ bot.on('interaction', async (interaction) => {
 });
 
 // Login using token
-bot.login(process.env.TOKEN);
+bot.login(config.token);
