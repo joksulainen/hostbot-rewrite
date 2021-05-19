@@ -9,8 +9,7 @@
   "author": "joksulainen",
   "license": "ISC",
   "dependencies": {
-    "discord.js": "github:discordjs/discord.js",
-    "dotenv": "^9.0.2"
+    "discord.js": "github:discordjs/discord.js"
   },
   "devDependencies": {
     "eslint": "^7.26.0"

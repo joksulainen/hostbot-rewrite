@@ -1,6 +1,5 @@
 // Dependencies
 const config = require('./config.json');
-require('dotenv').config();
 const Discord = require('discord.js');
 
 // Create new Discord client
@@ -97,4 +96,4 @@ bot.on('interaction', async (interaction) => {
 });
 
 // Login using token
-bot.login(process.env.TOKEN);
+bot.login(config.token);
