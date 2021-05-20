@@ -1,6 +1,7 @@
 // Dependencies
 const config = require('../config.json');
 const Discord = require('discord.js');
+const utils = require('./utils.js');
 
 // Create new Discord client
 const bot = new Discord.Client({
@@ -154,5 +155,5 @@ bot.on('interaction', async (interaction) => {
   }
 });
 
-// Login using token
-bot.login(config.token);
+// Export bot client to be executed in main.js
+module.exports = bot;
