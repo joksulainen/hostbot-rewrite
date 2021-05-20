@@ -2,5 +2,5 @@
   "embedColor": "#ff0000",
   "guildId": "",
   "token": "",
-  "dbPath": ""
+  "dbPath": "/path/to/database"
 }
