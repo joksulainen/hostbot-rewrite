@@ -8,7 +8,6 @@ const bot = new Discord.Client({
 		Discord.Intents.FLAGS.GUILDS,
 		Discord.Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
 		Discord.Intents.FLAGS.GUILD_MESSAGES,
-		Discord.Intents.FLAGS.GUILD_MEMBERS
 	],
 });
 
@@ -74,6 +73,37 @@ const commands = {
 		},
 	},
 	// Game management
+	songcheck: {
+		config: {
+			name: 'songcheck',
+			description: 'Send a message and ask participants to voice ownership',
+			options: [{
+				name: 'songid',
+				description: 'Song ID',
+				type: 'STRING',
+				required: true,
+			}],
+		},
+		handler: async (interaction) => {
+			const appInfo = await bot.application.fetch();
+			const embed = new Discord.MessageEmbed()
+				.setColor(config.embedColor)
+				.setAuthor(appInfo.name, appInfo.iconURL({dynamic: true}))
+				.setTitle('Song check')
+				.setDescription('Please check that you own this song')
+				.addFields(
+					{name: 'Title', value: interaction.options[0].value, inline: true},
+					{name: 'Pack', value: 'Arcaea', inline: true},
+					{name: 'Difficulty', value: '10+', inline: true},
+				)
+				.setTimestamp();
+
+			await interaction.reply('Command received, processing...');
+			const msg = await interaction.channel.send(embed);
+			await msg.react('👍');
+			await msg.react('👎');
+		},
+	},
 };
 const commandList = Object.keys(commands);
 
