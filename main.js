@@ -73,15 +73,16 @@ const commands = {
 const commandList = Object.keys(commands);
 
 bot.once('ready', async () => {
+	const guild = bot.guilds.cache.get(config.guildId);
 	// Remove all commands (To flush out unused commands)
-	const collectedCommands = await bot.guilds.cache.get(config.guildId).commands.fetch();
+	const collectedCommands = await guild.commands.fetch();
 	collectedCommands.forEach(async (command) => {
-		await bot.guilds.cache.get(config.guildId).commands.delete(command);
+		await guild.commands.delete(command);
 	});
 
 	// Create commands from commandList
 	commandList.forEach((commandName) => {
-		bot.guilds.cache.get(config.guildId).commands.create(commands[commandName].config);
+		guild.commands.create(commands[commandName].config);
 	});
 
 	console.log(`Logged in as ${bot.user.tag}`);
