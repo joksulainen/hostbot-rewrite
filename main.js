@@ -60,14 +60,15 @@ const commands = {
 			const max = interaction.options[0] !== undefined ? interaction.options[0].value : 6;
 			const min = interaction.options[1] !== undefined ? interaction.options[1].value : 1;
 			if (min > max) {
-				interaction.reply('Result: min > max\nTry again');
+				interaction.reply(`${min} <= Result <= ${max}\nResult: Try again`);
 				return;
 			}
 			const result = Math.floor(Math.random() * (max - min + 1) + min);
 
-			interaction.reply(`Result: ${result}`);
+			interaction.reply(`${min} <= Result <= ${max}\nResult: ${result}`);
 		},
 	},
+	// Game management
 };
 const commandList = Object.keys(commands);
 
