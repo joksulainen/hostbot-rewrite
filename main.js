@@ -82,6 +82,28 @@ const commands = {
 				description: 'Song ID',
 				type: 'STRING',
 				required: true,
+			},
+			{
+				name: 'difficulty',
+				description: 'Difficulty',
+				type: 'STRING',
+				required: true,
+				choices: [{
+					name: 'beyond',
+					value: 'byn',
+				},
+				{
+					name: 'future',
+					value: 'ftr',
+				},
+				{
+					name: 'present',
+					value: 'prs',
+				},
+				{
+					name: 'past',
+					value: 'pst',
+				}],
 			}],
 		},
 		handler: async (interaction) => {
@@ -94,11 +116,11 @@ const commands = {
 				.addFields(
 					{name: 'Title', value: interaction.options[0].value, inline: true},
 					{name: 'Pack', value: 'Arcaea', inline: true},
-					{name: 'Difficulty', value: '10+', inline: true},
+					{name: 'Difficulty', value: interaction.options[1].value, inline: true},
 				)
 				.setTimestamp();
 
-			await interaction.reply('Command received, processing...');
+			await interaction.reply('Command received, processing...', {ephemeral: true});
 			const msg = await interaction.channel.send(embed);
 			await msg.react('👍');
 			await msg.react('👎');
