@@ -134,7 +134,7 @@ bot.on('interaction', async (interaction) => {
 
 // Util functions
 function parseDifficulty(value) {return String(value / 2).replace('.5', '+');}
-function parseIntFromDiff(value) {return parseInt(parseFloat(value.replace('+', '.5')) * 2);}
+function parseIntFromDiff(value) {return parseFloat(value.replace('+', '.5')) * 2;}
 
 // Login using token
 bot.login(config.token);
