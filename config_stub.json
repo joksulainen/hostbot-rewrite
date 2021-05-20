@@ -1,6 +1,6 @@
 {
-  "embedColor": "#ff0000",
-  "guildId": "",
-  "token": "",
-  "dbPath": "/path/to/database"
+    "embedColor": "#ff0000",
+    "guildId": "",
+    "token": "",
+    "dbPath": "/path/to/database"
 }
