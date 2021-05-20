@@ -76,7 +76,7 @@ const commands = {
 	songcheck: {
 		config: {
 			name: 'songcheck',
-			description: 'Send a message and ask participants to voice ownership',
+			description: 'Send a message and ask participants to voice ownership of the given song',
 			options: [{
 				name: 'songid',
 				description: 'Song ID',
