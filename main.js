@@ -57,8 +57,8 @@ const commands = {
 			}],
 		},
 		handler: async (interaction) => {
-			const max = interaction.options[0] !== undefined ? interaction.options[0].value : 6;
-			const min = interaction.options[1] !== undefined ? interaction.options[1].value : 1;
+			const max = interaction.options[0]?.value || 6;
+			const min = interaction.options[1]?.value || 1;
 			if (min > max) {
 				interaction.reply(`${min} <= Result <= ${max}\nResult: Try again`);
 				return;
@@ -96,6 +96,10 @@ bot.on('interaction', async (interaction) => {
 		return;
 	}
 });
+
+// Util functions
+function parseDifficulty(value) {return String(value / 2).replace('.5', '+');}
+function parseIntFromDiff(value) {return parseInt(parseFloat(value.replace('+', '.5')) * 2);}
 
 // Login using token
 bot.login(config.token);
