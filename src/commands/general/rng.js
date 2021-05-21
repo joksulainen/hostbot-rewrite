@@ -9,8 +9,7 @@ const commandConfig = {
     name: 'max',
     description: 'Max value (Default: 6)',
     type: 'INTEGER',
-  },
-  {
+  }, {
     name: 'min',
     description: 'Min value (Default: 1)',
     type: 'INTEGER',
