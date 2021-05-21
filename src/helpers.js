@@ -1,6 +1,6 @@
 'use strict';
 
-const parsePack = {
+const parseSongPack = {
   // Base game
   single: 'Memory Archive',
   base: 'Arcaea',
@@ -33,5 +33,5 @@ const parsePack = {
 };
 
 module.exports = {
-  parsePack,
+  parseSongPack,
 };
