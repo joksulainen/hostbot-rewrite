@@ -2,6 +2,7 @@
 
 // Dependencies
 const Discord = require('discord.js');
+const sql = require('sqlite');
 const { embedColor } = require('../../../config');
 
 const commandConfig = {
@@ -34,6 +35,7 @@ const commandConfig = {
 };
 
 const handler = async (bot, interaction) => {
+  await interaction.reply('Command received, processing...', { ephemeral: true });
   const appInfo = await bot.application.fetch();
   const embed = new Discord.MessageEmbed()
     .setColor(embedColor)
@@ -47,12 +49,12 @@ const handler = async (bot, interaction) => {
     )
     .setTimestamp();
 
-  await interaction.reply('Command received, processing...', { ephemeral: true });
   const msg = await interaction.channel.send(embed);
   msg.react('👍');
   bot.setTimeout(() => {
     msg.react('👎');
   }, 500);
+  await interaction.editReply('Done!');
 };
 
 module.exports = {
