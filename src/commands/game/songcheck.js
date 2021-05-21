@@ -1,8 +1,8 @@
 'use strict';
 
 // Dependencies
-const config = require('../../../config');
 const Discord = require('discord.js');
+const { embedColor } = require('../../../config');
 
 const commandConfig = {
   name: 'songcheck',
@@ -36,7 +36,7 @@ const commandConfig = {
 const handler = async (bot, interaction) => {
   const appInfo = await bot.application.fetch();
   const embed = new Discord.MessageEmbed()
-    .setColor(config.embedColor)
+    .setColor(embedColor)
     .setAuthor(appInfo.name, appInfo.iconURL({ dynamic: true }))
     .setTitle('Song check')
     .setDescription('Please check that you own this song')
