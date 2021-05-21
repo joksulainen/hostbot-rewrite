@@ -2,5 +2,10 @@
     "embedColor": "#ff0000",
     "guildId": "",
     "token": "",
-    "dbPath": "/path/to/database"
+    "dbPath": "/path/to/database",
+    "hostRoleId": "",
+    "playerRoleId": "",
+    "inviteChannelId": "",
+    "lobbyChannelId": "",
+    "scoreChannelId": ""
 }
