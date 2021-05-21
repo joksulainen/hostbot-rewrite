@@ -2,7 +2,7 @@
 
 // Dependencies
 const Discord = require('discord.js');
-const config = require('../../../config');
+const { embedColor } = require('../../../config');
 
 const commandConfig = {
   name: 'info',
@@ -12,7 +12,7 @@ const commandConfig = {
 const handler = async (bot, interaction) => {
   const appInfo = await bot.application.fetch();
   const embed = new Discord.MessageEmbed()
-    .setColor(config.embedColor)
+    .setColor(embedColor)
     .setTitle(`${appInfo.name} | Info`)
     .setDescription('The same bot you know and love rewritten in Node.js to bring more control and slash commands')
     .setThumbnail(appInfo.iconURL())
