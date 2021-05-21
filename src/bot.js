@@ -1,3 +1,5 @@
+'use strict';
+
 // Dependencies
 const config = require('../config.json');
 const Discord = require('discord.js');
@@ -12,21 +14,22 @@ const bot = new Discord.Client({
 });
 
 // Import commands
-const commands = require('./commands/index');
+const commands = require('./commands');
 const commandList = Object.keys(commands);
 
 bot.once('ready', async () => {
   const guild = bot.guilds.cache.get(config.guildId);
+
   // Remove all commands (To flush out unused commands)
   const collectedCommands = await guild.commands.fetch();
-  collectedCommands.forEach(async (command) => {
+  for (const command of collectedCommands) {
     await guild.commands.delete(command);
-  });
+  }
 
   // Create commands from commandList
-  commandList.forEach(async (commandName) => {
+  for (const commandName of commandList) {
     await guild.commands.create(commands[commandName].config);
-  });
+  }
 
   console.log(`Logged in as ${bot.user.tag}`);
 });
