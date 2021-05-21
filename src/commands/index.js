@@ -1,17 +1,9 @@
+'use strict';
+
 // Command categories
-const commandsGeneral = require('./general/index');
-const commandsGame = require('./game/index');
+const commandsGeneral = require('./general');
+const commandsGame = require('./game');
 
-const commands = new Object();
-const commandGeneralList = Object.keys(commandsGeneral);
-const commandGameList = Object.keys(commandsGame);
-
-commandGeneralList.forEach((commandName) => {
-  commands[commandName] = commandsGeneral[commandName];
-});
-
-commandGameList.forEach((commandName) => {
-  commands[commandName] = commandsGame[commandName];
-});
+const commands = Object.assign({}, commandsGeneral, commandsGame);
 
 module.exports = commands;
