@@ -1,7 +1,7 @@
 'use strict';
 
 // Dependencies
-const { token } = require('./config.json');
+const { token } = require('./config');
 const bot = require('./src/bot');
 
 // Login using token
