@@ -1,9 +1,17 @@
 'use strict';
 
-// Command categories
-const commandsGeneral = require('./general');
-const commandsGame = require('./game');
+// Dependencies
+const fs = require('fs');
+const path = require('path');
 
-const commands = Object.assign({}, commandsGeneral, commandsGame);
+let commands = {};
+
+// Get dir contents without index.js
+const dirContents = fs.readdirSync(__dirname);
+dirContents.splice(dirContents.indexOf(path.basename(__filename)));
+
+for (const category of dirContents) {
+  commands = Object.assign(commands, require(`./${category}`));
+}
 
 module.exports = commands;
