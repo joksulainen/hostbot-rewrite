@@ -3,11 +3,12 @@
 // Dependencies
 const Discord = require('discord.js');
 const sql = require('sqlite');
-const { embedColor } = require('../../../config');
+const config = require('../../../config');
 
 const commandConfig = {
   name: 'songcheck',
   description: 'Send a message and ask participants to voice ownership of the given song',
+  defaultPermission: false,
   options: [{
     name: 'songid',
     description: 'Song ID',
@@ -36,24 +37,50 @@ const commandConfig = {
 
 const handler = async (bot, interaction) => {
   await interaction.reply('Command received, processing...', { ephemeral: true });
+  const songDb = new sql.Database(config.dbPath, sql.OPEN_READONLY, (error) => {
+    if (error) {
+      interaction.editReply('An error occurred while connecting to database');
+      return;
+    }
+  });
+
+  // Get song name
+  let songName = interaction.options[0].value;
+
+  // Get song pack
+  let songPack = 'Arcaea';
+
+  // Get song difficulty
+  let songDifficulty = interaction.options[1].value;
+  songDifficulty = songDifficulty.replace('byn', 'byd');
+  songDifficulty = songDifficulty.toUpperCase();
+
   const appInfo = await bot.application.fetch();
   const embed = new Discord.MessageEmbed()
-    .setColor(embedColor)
+    .setColor(config.embedColor)
     .setAuthor(appInfo.name, appInfo.iconURL({ dynamic: true }))
     .setTitle('Song check')
     .setDescription('Please check that you own this song')
     .addFields(
-      { name: 'Title', value: interaction.options[0].value, inline: true },
-      { name: 'Pack', value: 'Arcaea', inline: true },
-      { name: 'Difficulty', value: interaction.options[1].value, inline: true },
+      { name: 'Title', value: songName, inline: true },
+      { name: 'Pack', value: songPack, inline: true },
+      { name: 'Difficulty', value: songDifficulty, inline: true },
     )
     .setTimestamp();
 
   const msg = await interaction.channel.send(embed);
-  msg.react('👍');
+  msg.react(config.hosting.songCheckEmojis.owned);
   bot.setTimeout(() => {
-    msg.react('👎');
+    msg.react(config.hosting.songCheckEmojis.notOwned);
   }, 500);
+
+  songDb.close((error) => {
+    if (error) {
+      interaction.editReply('An error occurred while closing the database connection');
+      return;
+    }
+  });
+
   await interaction.editReply('Done!');
 };
 
