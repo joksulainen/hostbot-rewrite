@@ -7,7 +7,7 @@ const Discord = require('discord.js');
 console.time('startup');
 
 // Create new Discord client
-console.timeLog('startup', 'Client instance created');
+console.timeLog('startup', 'Creating client instance');
 const bot = new Discord.Client({
   intents: [
     Discord.Intents.FLAGS.GUILDS,
