@@ -3,9 +3,15 @@
     "guildId": "",
     "token": "",
     "dbPath": "/path/to/database",
-    "hostRoleId": "",
-    "playerRoleId": "",
-    "inviteChannelId": "",
-    "lobbyChannelId": "",
-    "scoreChannelId": ""
+    "hosting": {
+        "hostRoleId": "",
+        "playerRoleId": "",
+        "inviteChannelId": "",
+        "lobbyChannelId": "",
+        "scoreChannelId": "",
+        "songCheckEmojis": {
+            "owned": "👍",
+            "notOwned": "👎"
+        }
+    }
 }
