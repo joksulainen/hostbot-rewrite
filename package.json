@@ -7,9 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "joksulainen",
-  "license": "ISC",
   "dependencies": {
-    "discord.js": "github:discordjs/discord.js"
+    "discord.js": "github:discordjs/discord.js#c8d20a456b635ce6081ed8ad17315a9a0c0244bc",
+    "sqlite": "^4.0.22"
   },
   "devDependencies": {
     "eslint": "^7.26.0"

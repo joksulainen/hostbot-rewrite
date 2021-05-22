@@ -1,5 +1,17 @@
 {
-    "embedColor": "",
+    "embedColor": "#ff0000",
     "guildId": "",
-    "token": ""
+    "token": "",
+    "dbPath": "/path/to/database",
+    "hosting": {
+        "hostRoleId": "",
+        "playerRoleId": "",
+        "inviteChannelId": "",
+        "lobbyChannelId": "",
+        "scoreChannelId": "",
+        "songCheckEmojis": {
+            "owned": "👍",
+            "notOwned": "👎"
+        }
+    }
 }
