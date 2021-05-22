@@ -22,23 +22,25 @@ const commands = require('./commands');
 const commandList = Object.keys(commands);
 
 bot.once('ready', async () => {
+  console.timeLog('startup', `Logged in as ${bot.user.tag}`);
   console.timeLog('startup', 'Getting guild');
   const guild = bot.guilds.cache.get(config.guildId);
 
-  // Remove all commands (To flush out unused commands)
-  console.timeLog('startup', 'Removing commands');
+  // Remove unused commands
+  console.timeLog('startup', 'Removing unused commands');
   const collectedCommands = await guild.commands.fetch();
   for (const command of collectedCommands) {
+    if (commandList.includes(command[0, 1].name)) continue;
     await guild.commands.delete(command[0]);
   }
 
   // Create commands from commandList
-  console.timeLog('startup', 'Creating commands');
+  console.timeLog('startup', 'Creating/updating commands');
   for (const commandName of commandList) {
     await guild.commands.create(commands[commandName].config);
   }
 
-  console.timeLog('startup', `Logged in as ${bot.user.tag}`);
+  console.timeLog('startup', 'Ready!');
   console.timeEnd('startup');
 });
 
