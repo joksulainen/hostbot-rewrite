@@ -10,6 +10,7 @@ let commands = {};
 const dirContents = fs.readdirSync(__dirname);
 dirContents.splice(dirContents.indexOf(path.basename(__filename)));
 
+// Require each category
 for (const category of dirContents) {
   commands = Object.assign(commands, require(`./${category}`));
 }
