@@ -4,7 +4,10 @@
 const config = require('../config');
 const Discord = require('discord.js');
 
+console.time('startup');
+
 // Create new Discord client
+console.timeLog('startup', 'Client instance created');
 const bot = new Discord.Client({
   intents: [
     Discord.Intents.FLAGS.GUILDS,
@@ -14,29 +17,35 @@ const bot = new Discord.Client({
 });
 
 // Import commands
+console.timeLog('startup', 'Importing commands');
 const commands = require('./commands');
 const commandList = Object.keys(commands);
 
 bot.once('ready', async () => {
+  console.timeLog('startup', 'Getting guild');
   const guild = bot.guilds.cache.get(config.guildId);
 
   // Remove all commands (To flush out unused commands)
+  console.timeLog('startup', 'Removing commands');
   const collectedCommands = await guild.commands.fetch();
   for (const command of collectedCommands) {
-    await guild.commands.delete(command);
+    await guild.commands.delete(command[0]);
   }
 
   // Create commands from commandList
+  console.timeLog('startup', 'Creating commands');
   for (const commandName of commandList) {
     await guild.commands.create(commands[commandName].config);
   }
 
-  console.log(`Logged in as ${bot.user.tag}`);
+  console.timeLog('startup', `Logged in as ${bot.user.tag}`);
+  console.timeEnd('startup');
 });
 
 bot.on('interaction', async (interaction) => {
   // Execute command handler
   if (!interaction.isCommand()) return;
+  console.log(`${Date.now()} Interaction ${interaction.commandName} triggered`);
   if (commandList.includes(interaction.commandName)) {
     await commands[interaction.commandName].handler(bot, interaction);
     return;
