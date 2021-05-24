@@ -8,7 +8,6 @@ const config = require('../../../config');
 const commandConfig = {
   name: 'songcheck',
   description: 'Send a message and ask participants to voice ownership of the given song',
-  defaultPermission: false,
   options: [{
     name: 'songid',
     description: 'Song ID',
