@@ -7,7 +7,7 @@ const config = require('../../../config');
 
 const commandConfig = {
   name: 'songcheck',
-  description: 'Send a message and ask participants to voice ownership of the given song',
+  description: 'Send a message and ask participants to voice ownership of the given song.',
   options: [{
     name: 'songid',
     description: 'Song ID',
@@ -51,8 +51,7 @@ const handler = async (bot, interaction) => {
 
   // Get song difficulty
   let songDifficulty = interaction.options[1].value;
-  songDifficulty = songDifficulty.replace('byn', 'byd');
-  songDifficulty = songDifficulty.toUpperCase();
+  songDifficulty = songDifficulty.replace('byn', 'byd').toUpperCase();
 
   const appInfo = await bot.application.fetch();
   const embed = new Discord.MessageEmbed()

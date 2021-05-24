@@ -4,7 +4,7 @@
 
 const commandConfig = {
   name: 'rng',
-  description: 'Returns a random integer between min and max (both inclusive)',
+  description: 'Returns a random integer between min and max (both inclusive).',
   options: [{
     name: 'max',
     description: 'Max value (Default: 6)',

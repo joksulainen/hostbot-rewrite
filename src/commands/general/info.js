@@ -6,7 +6,7 @@ const { embedColor } = require('../../../config');
 
 const commandConfig = {
   name: 'info',
-  description: 'Info about the bot',
+  description: 'Info about the bot.',
 };
 
 const handler = async (bot, interaction) => {
