@@ -51,7 +51,7 @@ const handler = async (bot, interaction) => {
     driver: sql3.Database,
   });
 
-  const _songId = interaction.options[0].value;
+  const _songId = interaction.options[0].value.toLowerCase();
   const _diff = interaction.options[1].value;
 
   // Get song details
