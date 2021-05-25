@@ -40,6 +40,14 @@ bot.once('ready', async () => {
     await guild.commands.create(commands[commandName].config);
   }
 
+  // Set command permissions
+  console.timeLog('startup', 'Setting command permissions');
+  const commandCache = guild.commands.cache;
+  for (const command of commandCache) {
+    if (!commands[command[0, 1].name].config.permissions) continue;
+    await command[0, 1].setPermissions(commands[command[0, 1].name].config.permissions);
+  }
+
   console.timeLog('startup', 'Ready!');
   console.timeEnd('startup');
 });
