@@ -9,9 +9,7 @@
         "inviteChannelId": "",
         "lobbyChannelId": "",
         "scoreChannelId": "",
-        "songCheckEmojis": {
-            "owned": "👍",
-            "notOwned": "👎"
-        }
+        "songOwned": "👍",
+        "songNotOwned": "👎"
     }
 }
