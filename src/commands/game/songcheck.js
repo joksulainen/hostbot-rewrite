@@ -2,12 +2,21 @@
 
 // Dependencies
 const Discord = require('discord.js');
+const sql3 = require('sqlite3');
 const sql = require('sqlite');
 const config = require('../../../config');
+const utils = require('../../utils');
+const helpers = require('../../helpers');
 
 const commandConfig = {
   name: 'songcheck',
   description: 'Send a message and ask participants to voice ownership of the given song.',
+  defaultPermission: false,
+  permissions: [{
+    id: config.hosting.hostRoleId,
+    type: 'ROLE',
+    permission: true,
+  }],
   options: [{
     name: 'songid',
     description: 'Song ID',
@@ -36,27 +45,37 @@ const commandConfig = {
 
 const handler = async (bot, interaction) => {
   await interaction.reply('Command received, processing...', { ephemeral: true });
-  const songDb = new sql.Database(config.dbPath, sql.OPEN_READONLY, (error) => {
-    if (error) {
-      interaction.editReply('An error occurred while connecting to database');
-      return;
-    }
+  const songDb = await sql.open({
+    filename: config.dbPath,
+    mode: sql.OPEN_READONLY,
+    driver: sql3.Database,
   });
 
-  // Get song name
-  let songName = interaction.options[0].value;
+  const _songId = interaction.options[0].value;
+  const _diff = interaction.options[1].value;
 
-  // Get song pack
-  let songPack = 'Arcaea';
+  // Get song details
+  const sqlQuery = `SELECT name_en name, pakset pack, difficultly_${_diff} diff FROM songs WHERE sid = '${_songId}'`;
+  const result = await songDb.get(sqlQuery);
+  await songDb.close();
 
-  // Get song difficulty
-  let songDifficulty = interaction.options[1].value;
+  if (!result['name']) {
+    interaction.editReply('This song doesn\'t exist');
+    return;
+  } else if (result['diff'] === -1) {
+    interaction.editReply('This song doesn\'t have beyond difficulty');
+    return;
+  }
+
+  const songName = result['name'];
+  const songPack = helpers.parseSongPack[result['pack']];
+  let songDifficulty = '';
+
+  songDifficulty = `${_diff} ${utils.parseDisplayDiff(result['diff'])}`;
   songDifficulty = songDifficulty.replace('byn', 'byd').toUpperCase();
 
-  const appInfo = await bot.application.fetch();
   const embed = new Discord.MessageEmbed()
     .setColor(config.embedColor)
-    .setAuthor(appInfo.name, appInfo.iconURL({ dynamic: true }))
     .setTitle('Song check')
     .setDescription('Please check that you own this song')
     .addFields(
@@ -67,17 +86,10 @@ const handler = async (bot, interaction) => {
     .setTimestamp();
 
   const msg = await interaction.channel.send(embed);
-  msg.react(config.hosting.songCheckEmojis.owned);
-  bot.setTimeout(() => {
-    msg.react(config.hosting.songCheckEmojis.notOwned);
+  msg.react(config.hosting.songOwned);
+  bot.setTimeout(async () => {
+    msg.react(config.hosting.songNotOwned);
   }, 500);
-
-  songDb.close((error) => {
-    if (error) {
-      interaction.editReply('An error occurred while closing the database connection');
-      return;
-    }
-  });
 
   await interaction.editReply('Done!');
 };
