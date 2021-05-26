@@ -45,6 +45,8 @@ const commandConfig = {
 
 const handler = async (bot, interaction) => {
   await interaction.reply('Command received, processing...', { ephemeral: true });
+  const guild = bot.guilds.cache.get(config.guildId);
+  const lobbyChannel = guild.channels.cache.get(config.hosting.lobbyChannelId);
   const songDb = await sql.open({
     filename: config.dbPath,
     mode: sql.OPEN_READONLY,
@@ -85,7 +87,7 @@ const handler = async (bot, interaction) => {
     )
     .setTimestamp();
 
-  const msg = await interaction.channel.send(embed);
+  const msg = await lobbyChannel.send(embed);
   msg.react(config.hosting.songOwned);
   bot.setTimeout(async () => {
     msg.react(config.hosting.songNotOwned);
