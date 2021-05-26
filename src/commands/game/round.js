@@ -34,35 +34,45 @@ const commandConfig = {
   }],
 };
 
+let roundActive = false;
+let round = undefined;
+
 const handler = async (bot, interaction) => {
+  const guild = bot.guilds.cache.get(config.guildId);
+  const scoreChannel = guild.channels.cache.get(config.hosting.scoreChannelId);
+  const lobbyChannel = guild.channels.cache.get(config.hosting.lobbyChannelId);
   await interaction.reply('Command received, processing...', { ephemeral: true });
-  const appInfo = await bot.application.fetch();
-
-  const scoreEmbed = new Discord.MessageEmbed()
-    .setAuthor(appInfo.name, appInfo.iconURL({ dynamic: true }))
-    .setTimestamp();
-
-  const lobbyEmbed = new Discord.MessageEmbed()
-    .setColor(config.embedColor)
-    .setAuthor(appInfo.name, appInfo.iconURL({ dynamic: true }))
-    .setTimestamp();
 
   const calledSubcommand = interaction.options[0].name;
   if (calledSubcommand === 'start') {
+    if (roundActive) return interaction.editReply('There is an ongoing round');
     const timeMs = interaction.options[0].options[0]?.value * 1000;
-    scoreEmbed.setColor('#00ff00')
+    const embed = new Discord.MessageEmbed()
+      .setColor('#00ff00')
       .setTitle('Round started')
-      .setDescription('Go play that song!');
+      .setDescription('Go play that song!')
+      .setTimestamp();
+    scoreChannel.send(embed);
+    interaction.editReply('Done!');
   } else if (calledSubcommand === 'end') {
-    scoreEmbed.setColor('#ff0000')
+    if (!roundActive) return interaction.editReply('There is no ongoing round');
+    const embed = new Discord.MessageEmbed()
+      .setColor('#ff0000')
       .setTitle('Round ended')
-      .setDescription('The round was ended prematurely.');
+      .setDescription('The round was ended prematurely.')
+      .setTimestamp();
+    scoreChannel.send(embed);
+    interaction.editReply('Done!');
   } else if (calledSubcommand === 'cancel') {
-    scoreEmbed.setColor('#ff0000')
+    if (!roundActive) return interaction.editReply('There is no ongoing round');
+    const embed = new Discord.MessageEmbed()
+      .setColor('#ff0000')
       .setTitle('Round cancelled')
-      .setDescription('The round was cancelled. All scores are voided.');
+      .setDescription('The round was cancelled. All scores are voided.')
+      .setTimestamp();
+    scoreChannel.send(embed);
+    interaction.editReply('Done!');
   }
-  await interaction.editReply('Done!');
 };
 
 module.exports = {
