@@ -55,16 +55,19 @@ const handler = async (bot, interaction) => {
     } else {
       __seconds = String(timeS % 60);
     }
+
     const scoreEmbed = new Discord.MessageEmbed()
       .setColor('#00ff00')
       .setTitle('Round started')
       .setDescription('Go play that song!')
       .setTimestamp();
+
     const lobbyEmbed = new Discord.MessageEmbed()
       .setColor(config.embedColor)
       .setTitle('Round has begun')
       .setDescription(`Beat the song in __${__minutes}:${__seconds}__. Good luck!`)
       .setTimestamp();
+
     lobbyChannel.send(lobbyEmbed);
     scoreChannel.send(scoreEmbed);
     interaction.editReply('Done!');
@@ -75,6 +78,7 @@ const handler = async (bot, interaction) => {
       .setTitle('Round ended')
       .setDescription('The round was ended prematurely.')
       .setTimestamp();
+
     scoreChannel.send(embed);
     interaction.editReply('Done!');
   } else if (calledSubcommand === 'cancel') {
@@ -84,6 +88,7 @@ const handler = async (bot, interaction) => {
       .setTitle('Round cancelled')
       .setDescription('The round was cancelled. All scores are voided.')
       .setTimestamp();
+
     scoreChannel.send(embed);
     interaction.editReply('Done!');
   }
