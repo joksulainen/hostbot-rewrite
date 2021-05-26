@@ -38,21 +38,35 @@ let roundActive = false;
 let round = undefined;
 
 const handler = async (bot, interaction) => {
+  await interaction.reply('Command received, processing...', { ephemeral: true });
   const guild = bot.guilds.cache.get(config.guildId);
   const scoreChannel = guild.channels.cache.get(config.hosting.scoreChannelId);
   const lobbyChannel = guild.channels.cache.get(config.hosting.lobbyChannelId);
-  await interaction.reply('Command received, processing...', { ephemeral: true });
 
   const calledSubcommand = interaction.options[0].name;
   if (calledSubcommand === 'start') {
     if (roundActive) return interaction.editReply('There is an ongoing round');
-    const timeMs = interaction.options[0].options[0]?.value * 1000;
-    const embed = new Discord.MessageEmbed()
+    const timeS = interaction.options[0].options[0]?.value;
+    const timeMs = timeS * 1000;
+    const __minutes = Math.floor(timeS / 60);
+    let __seconds = '';
+    if ((timeS % 60) < 10) {
+      __seconds = `0${timeS % 60}`;
+    } else {
+      __seconds = String(timeS % 60);
+    }
+    const scoreEmbed = new Discord.MessageEmbed()
       .setColor('#00ff00')
       .setTitle('Round started')
       .setDescription('Go play that song!')
       .setTimestamp();
-    scoreChannel.send(embed);
+    const lobbyEmbed = new Discord.MessageEmbed()
+      .setColor(config.embedColor)
+      .setTitle('Round has begun')
+      .setDescription(`Beat the song in __${__minutes}:${__seconds}__. Good luck!`)
+      .setTimestamp();
+    lobbyChannel.send(lobbyEmbed);
+    scoreChannel.send(scoreEmbed);
     interaction.editReply('Done!');
   } else if (calledSubcommand === 'end') {
     if (!roundActive) return interaction.editReply('There is no ongoing round');
