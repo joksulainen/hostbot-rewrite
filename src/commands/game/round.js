@@ -48,12 +48,12 @@ const handler = async (bot, interaction) => {
     if (roundActive) return interaction.editReply('There is an ongoing round');
     const timeS = interaction.options[0].options[0]?.value;
     const timeMs = timeS * 1000;
-    const __minutes = Math.floor(timeS / 60);
-    let __seconds = '';
+    const _minutes = Math.floor(timeS / 60);
+    let _seconds = '';
     if ((timeS % 60) < 10) {
-      __seconds = `0${timeS % 60}`;
+      _seconds = `0${timeS % 60}`;
     } else {
-      __seconds = String(timeS % 60);
+      _seconds = String(timeS % 60);
     }
 
     const scoreEmbed = new Discord.MessageEmbed()
@@ -65,7 +65,7 @@ const handler = async (bot, interaction) => {
     const lobbyEmbed = new Discord.MessageEmbed()
       .setColor(config.embedColor)
       .setTitle('Round has begun')
-      .setDescription(`Beat the song in __${__minutes}:${__seconds}__. Good luck!`)
+      .setDescription(`Beat the song in __${_minutes}:${_seconds}__. Good luck!`)
       .setTimestamp();
 
     lobbyChannel.send(lobbyEmbed);
