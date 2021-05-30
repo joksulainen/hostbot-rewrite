@@ -80,6 +80,7 @@ const handler = async (bot, interaction) => {
     .setColor(config.embedColor)
     .setTitle('Song check')
     .setDescription('Please check that you own this song')
+    .setThumbnail('https://i.imgur.com/wSTFkRM.png')
     .addFields(
       { name: 'Title', value: songName, inline: true },
       { name: 'Pack', value: songPack, inline: true },
