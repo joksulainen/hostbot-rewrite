@@ -66,8 +66,7 @@ const handler = async (bot, interaction) => {
   await songDb.close();
 
   if (result['diff'] === -1) {
-    interaction.editReply('This song doesn\'t have beyond difficulty');
-    return;
+    return await interaction.editReply('This song doesn\'t have beyond difficulty');
   }
 
   const songName = result['name'];
@@ -81,7 +80,8 @@ const handler = async (bot, interaction) => {
     .setColor(config.embedColor)
     .setTitle('Song check')
     .setDescription('Please check that you own this song')
-    .setThumbnail('https://i.imgur.com/wSTFkRM.png')
+    .attachFiles([`../img/${_songId}`])
+    .setThumbnail(`attachment://${_songId}`)
     .addFields(
       { name: 'Title', value: songName, inline: true },
       { name: 'Pack', value: songPack, inline: true },
