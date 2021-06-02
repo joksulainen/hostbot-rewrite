@@ -45,13 +45,17 @@ const commandConfig = {
 
 const handler = async (bot, interaction) => {
   await interaction.reply('Command received, processing...', { ephemeral: true });
+  if (!config.dbPath) return await interaction.editReply('Song database path is empty in config');
   const guild = bot.guilds.cache.get(config.guildId);
   const lobbyChannel = guild.channels.cache.get(config.hosting.lobbyChannelId);
   const songDb = await sql.open({
     filename: config.dbPath,
     mode: sql.OPEN_READONLY,
     driver: sql3.Database,
-  });
+  })
+    .catch(async (error) => {
+      return await interaction.editReply(error);
+    });
 
   const _songId = interaction.options[0].value.toLowerCase();
   const _diff = interaction.options[1].value;
@@ -61,10 +65,7 @@ const handler = async (bot, interaction) => {
   const result = await songDb.get(sqlQuery);
   await songDb.close();
 
-  if (!result['name']) {
-    interaction.editReply('This song doesn\'t exist');
-    return;
-  } else if (result['diff'] === -1) {
+  if (result['diff'] === -1) {
     interaction.editReply('This song doesn\'t have beyond difficulty');
     return;
   }
