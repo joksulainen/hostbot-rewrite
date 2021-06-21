@@ -56,7 +56,7 @@ bot.on('interaction', async (interaction) => {
   // Execute command handler
   if (interaction.isCommand()) {
     if (commandList.includes(interaction.commandName)) {
-      console.log(`${new Date().toUTCString()}: Command '${interaction.commandName}' triggered`);
+      console.log(`${new Date().toUTCString()} - Command '${interaction.commandName}' triggered`);
       await commands[interaction.commandName].handler(bot, interaction);
       return;
     }
