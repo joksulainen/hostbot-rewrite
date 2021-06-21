@@ -66,7 +66,10 @@ const handler = async (bot, interaction) => {
   const result = await songDb.get(sqlQuery);
   await songDb.close();
 
-  if (result['diff'] === -1) return await interaction.editReply('This song doesn\'t have beyond difficulty');
+  if (!result) {
+    return await interaction.editReply('This song doesn\'t exist.');
+  }
+  if (result['diff'] === -1) return await interaction.editReply('This song doesn\'t have beyond difficulty.');
 
   const songName = result['name'];
   const songPack = helpers.parseSongPack[result['pack']];
