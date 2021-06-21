@@ -4,6 +4,7 @@
 const config = require('../config');
 const Discord = require('discord.js');
 
+console.log(`Began start up at ${new Date().toUTCString()}`);
 console.time('startup');
 
 // Create new Discord client
@@ -50,6 +51,7 @@ bot.once('ready', async () => {
 
   console.timeLog('startup', 'Ready!');
   console.timeEnd('startup');
+  console.log(`Finished start up at ${new Date().toUTCString()}`);
 });
 
 bot.on('interaction', async (interaction) => {
