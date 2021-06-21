@@ -71,17 +71,13 @@ const handler = async (bot, interaction) => {
 
   const songName = result['name'];
   const songPack = helpers.parseSongPack[result['pack']];
-  let songDifficulty = '';
-
-  songDifficulty = `${_diff} ${utils.parseDisplayDiff(result['diff'])}`;
-  songDifficulty = songDifficulty.replace('byn', 'byd').toUpperCase();
+  const songDifficulty = `${_diff} ${utils.parseDisplayDiff(result['diff'])}`.replace('byn', 'byd').toUpperCase();
 
   const embed = new Discord.MessageEmbed()
     .setColor(config.embedColor)
     .setTitle('Song check')
     .setDescription('Please check that you own this song')
-    .attachFiles([`../img/${_songId}`])
-    .setThumbnail(`attachment://${_songId}`)
+    .setThumbnail('')
     .addFields(
       { name: 'Title', value: songName, inline: true },
       { name: 'Pack', value: songPack, inline: true },
