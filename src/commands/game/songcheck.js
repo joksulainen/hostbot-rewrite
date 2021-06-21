@@ -4,6 +4,7 @@
 const Discord = require('discord.js');
 const sql3 = require('sqlite3');
 const sql = require('sqlite');
+const fs = require('fs');
 const config = require('../../../config');
 const utils = require('../../utils');
 const helpers = require('../../helpers');
@@ -65,9 +66,7 @@ const handler = async (bot, interaction) => {
   const result = await songDb.get(sqlQuery);
   await songDb.close();
 
-  if (result['diff'] === -1) {
-    return await interaction.editReply('This song doesn\'t have beyond difficulty');
-  }
+  if (result['diff'] === -1) return await interaction.editReply('This song doesn\'t have beyond difficulty');
 
   const songName = result['name'];
   const songPack = helpers.parseSongPack[result['pack']];
@@ -77,13 +76,31 @@ const handler = async (bot, interaction) => {
     .setColor(config.embedColor)
     .setTitle('Song check')
     .setDescription('Please check that you own this song')
-    .setThumbnail('')
     .addFields(
       { name: 'Title', value: songName, inline: true },
       { name: 'Pack', value: songPack, inline: true },
       { name: 'Difficulty', value: songDifficulty, inline: true },
     )
     .setTimestamp();
+
+  // Get song jacket and attach it
+  let fileName = _songId;
+  if (_diff === 'byn') {
+    fileName = fileName + '_byn';
+  } else if (_songId === 'stager') {
+    fileName = `${fileName}_${_diff}`;
+  }
+
+  const dirContents = fs.readdirSync('./src/img/song_jackets');
+  for (const file of dirContents) {
+    if (file.includes(fileName)) {
+      fileName = file;
+      break;
+    }
+  }
+
+  embed.attachFiles([`./src/img/song_jackets/${fileName}`])
+    .setImage(`attachment://${fileName}`);
 
   const msg = await lobbyChannel.send(embed);
   msg.react(config.hosting.songOwned);
