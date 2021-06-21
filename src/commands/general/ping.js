@@ -8,10 +8,7 @@ const commandConfig = {
 };
 
 const handler = async (bot, interaction) => {
-  await interaction.reply('Command received, measuring latency...');
-  const msg = await interaction.channel.send('Ping...');
-  await msg.edit(`**Pong!** \`${Date.now() - msg.createdAt}ms\``);
-  await interaction.editReply('Done!');
+  await interaction.reply(`**Pong!** My ping is \`${bot.ws.ping}ms\``);
 };
 
 module.exports = {
