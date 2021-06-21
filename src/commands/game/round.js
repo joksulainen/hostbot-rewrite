@@ -65,7 +65,6 @@ const handler = async (bot, interaction) => {
 
     lobbyChannel.send(lobbyEmbed);
     scoreChannel.send(scoreEmbed);
-    interaction.editReply('Done!');
   } else if (calledSubcommand === 'end') {
     if (!roundActive) return interaction.editReply('There is no ongoing round');
     const embed = new Discord.MessageEmbed()
@@ -75,18 +74,18 @@ const handler = async (bot, interaction) => {
       .setTimestamp();
 
     scoreChannel.send(embed);
-    interaction.editReply('Done!');
   } else if (calledSubcommand === 'cancel') {
     if (!roundActive) return interaction.editReply('There is no ongoing round');
     const embed = new Discord.MessageEmbed()
       .setColor('#ff0000')
       .setTitle('Round cancelled')
-      .setDescription('The round was cancelled. All scores are voided.')
+      .setDescription('The round was cancelled. All scores are void.')
       .setTimestamp();
 
     scoreChannel.send(embed);
-    interaction.editReply('Done!');
   }
+
+  await interaction.editReply('Done!');
 };
 
 module.exports = {

@@ -19,13 +19,10 @@ const commandConfig = {
 const handler = async (bot, interaction) => {
   const max = interaction.options[0]?.value || 6;
   const min = interaction.options[1]?.value || 1;
-  if (min > max) {
-    interaction.reply(`${min} <= Result <= ${max}\nResult: Try again`);
-    return;
-  }
+  if (min > max) return await interaction.reply(`${min} <= Result <= ${max}\nResult: Try again`);
   const result = Math.floor(Math.random() * (max - min + 1) + min);
 
-  interaction.reply(`${min} <= Result <= ${max}\nResult: ${result}`);
+  await interaction.reply(`${min} <= Result <= ${max}\nResult: ${result}`);
 };
 
 module.exports = {

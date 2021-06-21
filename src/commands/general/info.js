@@ -16,8 +16,8 @@ const handler = async (bot, interaction) => {
     .setTitle(`${appInfo.name} | Info`)
     .setDescription('The same bot you know and love rewritten in Node.js to bring more control and slash commands')
     .setThumbnail(appInfo.iconURL())
-    .setTimestamp()
-    .setFooter(`Created by ${appInfo.owner.tag}`, appInfo.owner.displayAvatarURL({ dynamic: true }));
+    .setFooter(`Created by ${appInfo.owner.tag}`, appInfo.owner.displayAvatarURL({ dynamic: true }))
+    .setTimestamp();
 
   await interaction.reply(embed);
 };
