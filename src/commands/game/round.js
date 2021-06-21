@@ -49,12 +49,7 @@ const handler = async (bot, interaction) => {
     const timeS = interaction.options[0].options[0]?.value;
     const timeMs = timeS * 1000;
     const _minutes = Math.floor(timeS / 60);
-    let _seconds = '';
-    if ((timeS % 60) < 10) {
-      _seconds = `0${timeS % 60}`;
-    } else {
-      _seconds = String(timeS % 60);
-    }
+    const _seconds = ((timeS % 60) < 10) ? `0${timeS % 60}` : String(timeS % 60);
 
     const scoreEmbed = new Discord.MessageEmbed()
       .setColor('#00ff00')
