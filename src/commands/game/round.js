@@ -34,7 +34,6 @@ const commandConfig = {
   }],
 };
 
-let roundActive = false;
 let round = undefined;
 
 const handler = async (bot, interaction) => {
@@ -45,7 +44,7 @@ const handler = async (bot, interaction) => {
 
   const calledSubcommand = interaction.options[0].name;
   if (calledSubcommand === 'start') {
-    if (roundActive) return interaction.editReply('There is an ongoing round');
+    if (round) return await interaction.editReply('There is an ongoing round');
     const timeS = interaction.options[0].options[0]?.value;
     const timeMs = timeS * 1000;
     const _minutes = Math.floor(timeS / 60);
@@ -63,26 +62,26 @@ const handler = async (bot, interaction) => {
       .setDescription(`Beat the song in __${_minutes}:${_seconds}__. Good luck!`)
       .setTimestamp();
 
-    lobbyChannel.send(lobbyEmbed);
-    scoreChannel.send(scoreEmbed);
+    await lobbyChannel.send(lobbyEmbed);
+    await scoreChannel.send(scoreEmbed);
   } else if (calledSubcommand === 'end') {
-    if (!roundActive) return interaction.editReply('There is no ongoing round');
+    if (!round) return interaction.editReply('There is no ongoing round');
     const embed = new Discord.MessageEmbed()
       .setColor('#ff0000')
       .setTitle('Round ended')
       .setDescription('The round was ended prematurely.')
       .setTimestamp();
 
-    scoreChannel.send(embed);
+    await scoreChannel.send(embed);
   } else if (calledSubcommand === 'cancel') {
-    if (!roundActive) return interaction.editReply('There is no ongoing round');
+    if (!round) return interaction.editReply('There is no ongoing round');
     const embed = new Discord.MessageEmbed()
       .setColor('#ff0000')
       .setTitle('Round cancelled')
       .setDescription('The round was cancelled. All scores are void.')
       .setTimestamp();
 
-    scoreChannel.send(embed);
+    await scoreChannel.send(embed);
   }
 
   await interaction.editReply('Done!');
