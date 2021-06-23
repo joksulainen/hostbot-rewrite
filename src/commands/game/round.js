@@ -42,8 +42,8 @@ const handler = async (bot, interaction) => {
   const scoreChannel = guild.channels.cache.get(config.hosting.scoreChannelId);
   const lobbyChannel = guild.channels.cache.get(config.hosting.lobbyChannelId);
 
-  const calledSubcommand = interaction.options[0].name;
-  if (calledSubcommand === 'start') {
+  const invokedSubcommand = interaction.options[0].name;
+  if (invokedSubcommand === 'start') {
     if (round) return await interaction.editReply('There is an ongoing round');
     const timeS = interaction.options[0].options[0]?.value;
     const timeMs = timeS * 1000;
@@ -64,7 +64,7 @@ const handler = async (bot, interaction) => {
 
     await lobbyChannel.send(lobbyEmbed);
     await scoreChannel.send(scoreEmbed);
-  } else if (calledSubcommand === 'end') {
+  } else if (invokedSubcommand === 'end') {
     if (!round) return interaction.editReply('There is no ongoing round');
     const embed = new Discord.MessageEmbed()
       .setColor('#ff0000')
@@ -73,7 +73,7 @@ const handler = async (bot, interaction) => {
       .setTimestamp();
 
     await scoreChannel.send(embed);
-  } else if (calledSubcommand === 'cancel') {
+  } else if (invokedSubcommand === 'cancel') {
     if (!round) return interaction.editReply('There is no ongoing round');
     const embed = new Discord.MessageEmbed()
       .setColor('#ff0000')
