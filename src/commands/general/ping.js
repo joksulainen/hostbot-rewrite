@@ -8,7 +8,7 @@ const commandConfig = {
 };
 
 const handler = async (bot, interaction) => {
-  await interaction.reply(`**Pong!** My ping is \`${bot.ws.ping}ms\``);
+  await interaction.reply(`**Pong!** Your ping is \`${Date.now() - interaction.createdAt}ms\``);
 };
 
 module.exports = {
