@@ -62,18 +62,25 @@ const handler = async (bot, interaction) => {
   const _diff = interaction.options[1].value;
 
   // Get song details
-  const sqlQuery = `SELECT name_en name, pakset pack, difficultly_${_diff} diff FROM songs WHERE sid = '${_songId}'`;
+  const sqlQuery = `SELECT name_en name, pakset pack, difficultly_${_diff} difficulty, notes_${_diff} noteCount, bpm, rating_${_diff} cc, time duration
+    FROM songs WHERE sid = '${_songId}'`;
   const result = await songDb.get(sqlQuery);
   await songDb.close();
 
   if (!result) {
     return await interaction.editReply('This song doesn\'t exist.');
   }
-  if (result['diff'] === -1) return await interaction.editReply('This song doesn\'t have beyond difficulty.');
+  if (result['difficulty'] === -1) return await interaction.editReply('This song doesn\'t have beyond difficulty.');
 
   const songName = result['name'];
   const songPack = helpers.parseSongPack[result['pack']];
-  const songDifficulty = `${_diff} ${utils.parseDisplayDiff(result['diff'])}`.replace('byn', 'byd').toUpperCase();
+  const songDifficulty = `${_diff} ${utils.parseDisplayDiff(result['difficulty'])}`.replace('byn', 'byd').toUpperCase();
+  const songNoteCount = result['noteCount'];
+  const songBPM = result['bpm'];
+  const songCC = result['cc'] / 10;
+  const _minutes = Math.floor(result['duration'] / 60);
+  const _seconds = ((result['duration'] % 60) < 10) ? `0${result['duration'] % 60}` : String(result['duration'] % 60);
+  const songDuration = `${_minutes}:${_seconds}`;
 
   const embed = new Discord.MessageEmbed()
     .setColor(config.embedColor)
@@ -83,6 +90,10 @@ const handler = async (bot, interaction) => {
       { name: 'Title', value: songName, inline: true },
       { name: 'Pack', value: songPack, inline: true },
       { name: 'Difficulty', value: songDifficulty, inline: true },
+      { name: 'Notes', value: songNoteCount, inline: true },
+      { name: 'BPM', value: songBPM, inline:  true },
+      { name: 'Chart Constant', value: songCC, inline: true },
+      { name: 'Duration', value: songDuration, inline: true },
     )
     .setTimestamp();
 
@@ -102,6 +113,7 @@ const handler = async (bot, interaction) => {
     }
   }
 
+  // Poll active to determine between image and thumbnail
   embed.attachFiles([`./src/img/song_jackets/${fileName}`])
     .setImage(`attachment://${fileName}`);
 
