@@ -113,7 +113,6 @@ const handler = async (bot, interaction) => {
     }
   }
 
-  // Poll active to determine between image and thumbnail
   embed.attachFiles([`./src/img/song_jackets/${fileName}`])
     .setImage(`attachment://${fileName}`);
 
