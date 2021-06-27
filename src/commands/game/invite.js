@@ -35,7 +35,7 @@ const commandConfig = {
 };
 
 const handler = async (bot, interaction) => {
-  await interaction.reply('Placeholder');
+  await interaction.reply({ content: 'Placeholder' });
 };
 
 module.exports = {

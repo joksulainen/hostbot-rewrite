@@ -37,15 +37,15 @@ const commandConfig = {
 let round = undefined;
 
 const handler = async (bot, interaction) => {
-  await interaction.reply('Command received, processing...', { ephemeral: true });
+  await interaction.reply({ content: 'Command received, processing...', ephemeral: true });
   const guild = bot.guilds.cache.get(config.guildId);
   const scoreChannel = guild.channels.cache.get(config.hosting.scoreChannelId);
   const lobbyChannel = guild.channels.cache.get(config.hosting.lobbyChannelId);
 
-  const invokedSubcommand = interaction.options[0].name;
+  const invokedSubcommand = interaction.options.first().name;
   if (invokedSubcommand === 'start') {
-    if (round) return await interaction.editReply('There is an ongoing round');
-    const timeS = interaction.options[0].options[0]?.value;
+    if (round) return await interaction.editReply({ content: 'There is an ongoing round' });
+    const timeS = interaction.options.get('start')?.options.get('time').value;
     const timeMs = timeS * 1000;
     const _minutes = Math.floor(timeS / 60);
     const _seconds = ((timeS % 60) < 10) ? `0${timeS % 60}` : String(timeS % 60);
@@ -62,29 +62,29 @@ const handler = async (bot, interaction) => {
       .setDescription(`Beat the song in __${_minutes}:${_seconds}__. Good luck!`)
       .setTimestamp();
 
-    await lobbyChannel.send(lobbyEmbed);
-    await scoreChannel.send(scoreEmbed);
+    await lobbyChannel.send({ embeds: [lobbyEmbed] });
+    await scoreChannel.send({ embeds: [scoreEmbed] });
   } else if (invokedSubcommand === 'end') {
-    if (!round) return interaction.editReply('There is no ongoing round');
+    if (!round) return interaction.editReply({ content: 'There is no ongoing round' });
     const embed = new Discord.MessageEmbed()
       .setColor('#ff0000')
       .setTitle('Round ended')
       .setDescription('The round was ended prematurely.')
       .setTimestamp();
 
-    await scoreChannel.send(embed);
+    await scoreChannel.send({ embeds: [embed] });
   } else if (invokedSubcommand === 'cancel') {
-    if (!round) return interaction.editReply('There is no ongoing round');
+    if (!round) return interaction.editReply({ content: 'There is no ongoing round' });
     const embed = new Discord.MessageEmbed()
       .setColor('#ff0000')
       .setTitle('Round cancelled')
       .setDescription('The round was cancelled. All scores are void.')
       .setTimestamp();
 
-    await scoreChannel.send(embed);
+    await scoreChannel.send({ embeds: [embed] });
   }
 
-  await interaction.editReply('Done!');
+  await interaction.editReply({ content: 'Done!' });
 };
 
 module.exports = {

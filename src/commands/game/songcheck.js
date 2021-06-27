@@ -45,7 +45,7 @@ const commandConfig = {
 };
 
 const handler = async (bot, interaction) => {
-  await interaction.reply('Command received, processing...', { ephemeral: true });
+  await interaction.reply({ content: 'Command received, processing...', ephemeral: true });
   if (!config.dbPath) return await interaction.editReply('Song database path is empty in config');
   const guild = bot.guilds.cache.get(config.guildId);
   const lobbyChannel = guild.channels.cache.get(config.hosting.lobbyChannelId);
@@ -55,11 +55,11 @@ const handler = async (bot, interaction) => {
     driver: sql3.Database,
   })
     .catch(async (error) => {
-      return await interaction.editReply(error);
+      return await interaction.editReply({ content: error });
     });
 
-  const _songId = interaction.options[0].value.toLowerCase();
-  const _diff = interaction.options[1].value;
+  const _songId = interaction.options.get('songid').value.toLowerCase();
+  const _diff = interaction.options.get('difficulty').value;
 
   // Get song details
   const sqlQuery = `SELECT name_en name, pakset pack, difficultly_${_diff} difficulty, notes_${_diff} noteCount, bpm, rating_${_diff} cc, time duration
@@ -68,16 +68,16 @@ const handler = async (bot, interaction) => {
   await songDb.close();
 
   if (!result) {
-    return await interaction.editReply('This song doesn\'t exist.');
+    return await interaction.editReply({ content: 'This song doesn\'t exist.' });
   }
-  if (result['difficulty'] === -1) return await interaction.editReply('This song doesn\'t have beyond difficulty.');
+  if (result['difficulty'] === -1) return await interaction.editReply({ content: 'This song doesn\'t have beyond difficulty.' });
 
   const songName = result['name'];
   const songPack = helpers.parseSongPack[result['pack']];
   const songDifficulty = `${_diff} ${utils.parseDisplayDiff(result['difficulty'])}`.replace('byn', 'byd').toUpperCase();
-  const songNoteCount = result['noteCount'];
+  const songNoteCount = String(result['noteCount']);
   const songBPM = result['bpm'];
-  const songCC = result['cc'] / 10;
+  const songCC = String(result['cc'] / 10);
   const _minutes = Math.floor(result['duration'] / 60);
   const _seconds = ((result['duration'] % 60) < 10) ? `0${result['duration'] % 60}` : String(result['duration'] % 60);
   const songDuration = `${_minutes}:${_seconds}`;
@@ -113,16 +113,15 @@ const handler = async (bot, interaction) => {
     }
   }
 
-  embed.attachFiles([`./src/img/song_jackets/${fileName}`])
-    .setImage(`attachment://${fileName}`);
+  embed.setImage(`attachment://${fileName}`);
 
-  const msg = await lobbyChannel.send(embed);
+  const msg = await lobbyChannel.send({ files: [`./src/img/song_jackets/${fileName}`], embeds: [embed] });
   msg.react(config.hosting.songOwned);
   bot.setTimeout(async () => {
     msg.react(config.hosting.songNotOwned);
   }, 500);
 
-  await interaction.editReply('Done!');
+  await interaction.editReply({ content: 'Done!' });
 };
 
 module.exports = {

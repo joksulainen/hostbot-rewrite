@@ -19,7 +19,7 @@ const handler = async (bot, interaction) => {
     .setFooter(`Created by ${appInfo.owner.tag}`, appInfo.owner.displayAvatarURL({ dynamic: true }))
     .setTimestamp();
 
-  await interaction.reply(embed);
+  await interaction.reply({ embeds: [embed] });
 };
 
 module.exports = {
