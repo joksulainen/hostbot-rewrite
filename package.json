@@ -8,7 +8,7 @@
   },
   "author": "joksulainen",
   "dependencies": {
-    "discord.js": "github:discordjs/discord.js#c8d20a456b635ce6081ed8ad17315a9a0c0244bc",
+    "discord.js": "~13.0.0-dev.b15d825bb3acdf432b94d8413a7a964ccc8734bc",
     "sqlite": "^4.0.22",
     "sqlite3": "^5.0.2"
   },
