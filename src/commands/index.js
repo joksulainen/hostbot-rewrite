@@ -4,16 +4,18 @@
 const fs = require('fs');
 const path = require('path');
 
-let commands = {};
+const commands = {};
 
-// Get dir contents without index.js and template category
-const dirContents = fs.readdirSync(__dirname);
-dirContents.splice(dirContents.indexOf(path.basename(__filename)), 1);
-dirContents.splice(dirContents.indexOf('template'), 1);
+// Get dir contents without index.js
+const categories = fs.readdirSync(__dirname);
+categories.splice(categories.indexOf(path.basename(__filename)), 1);
 
-// Require each category
-for (const category of dirContents) {
-  commands = Object.assign(commands, require(`./${category}`));
+// Require each command
+for (const category of categories) {
+  const contents = fs.readdirSync(__dirname + `/${category}`);
+  for (const item of contents) {
+    commands[path.basename(item, path.extname(item))] = require(`./${category}/${item}`);
+  }
 }
 
 module.exports = commands;

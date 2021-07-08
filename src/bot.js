@@ -39,6 +39,7 @@ bot.once('ready', async () => {
   console.timeLog('startup', 'Creating/updating commands');
   for (const commandName of commandList) {
     await guild.commands.create(commands[commandName].config);
+    console.timeLog('startup', `Created ${commandName}`);
   }
 
   // Set command permissions
