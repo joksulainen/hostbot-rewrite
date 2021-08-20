@@ -47,7 +47,7 @@ bot.once('ready', async () => {
   const commandCache = guild.commands.cache;
   for (const command of commandCache) {
     if (!commands[command[0, 1].name].config.permissions) continue;
-    await command[0, 1].setPermissions(commands[command[0, 1].name].config.permissions);
+    await command[0, 1].permissions.set({ permissions: commands[command[0, 1].name].config.permissions });
     console.timeLog('startup', `Set '${command[0, 1].name}' permissions`);
   }
 
